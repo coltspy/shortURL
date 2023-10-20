@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -35,29 +36,47 @@ func shortenURL(w http.ResponseWriter, r *http.Request) {
 
 		shortToken := generateShortToken()
 		urlMap[shortToken] = originalURL
-		fmt.Fprintf(w, "http://localhost:8080/%s", shortToken)
+		fmt.Fprintf(w, "http://localhost:8080/r/%s", shortToken)
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-	}
-}
-
-// Handler to redirect from the short URL to the original one
-func redirectFromShort(w http.ResponseWriter, r *http.Request) {
-	shortToken := r.URL.Path[len("/"):]
-	if originalURL, exists := urlMap[shortToken]; exists {
-		http.Redirect(w, r, originalURL, http.StatusSeeOther)
-	} else {
-		http.Error(w, "Short URL not found", http.StatusNotFound)
 	}
 }
 
 func main() {
 	rand.Seed(time.Now().UnixNano()) // initialize global pseudo random generator
 
-	http.HandleFunc("/shorten", shortenURL) // Register the handler
-	http.HandleFunc("/", redirectFromShort) // Assumes all other requests are for short URLs
+	// Serve static files from the 'static' directory
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fs)
+
+	// Handle URL shortening
+	http.HandleFunc("/shorten", shortenURL)
+
+	// Handle redirection
+	http.HandleFunc("/r/", redirectFromShort)
+
+	log.Println("Server is running on http://localhost:8080")
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+}
+
+func redirectFromShort(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+
+	// The root path should be handled by the static file handler, so we don't need special handling for it here.
+	// Instead, we focus on the "/r/" prefixed paths here.
+	if strings.HasPrefix(path, "/r/") {
+		shortToken := path[len("/r/"):] // extract the shortToken from the URL
+		if originalURL, exists := urlMap[shortToken]; exists {
+			http.Redirect(w, r, originalURL, http.StatusSeeOther)
+			return
+		} else {
+			http.Error(w, "Short URL not found", http.StatusNotFound)
+			return
+		}
+	}
+
+	// If the path doesn't start with "/r/", let the static file handler deal with it.
 }
