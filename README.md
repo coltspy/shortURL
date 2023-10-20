@@ -1,7 +1,8 @@
 # shortURL Readme
 ![Static Badge](https://img.shields.io/badge/last%20commit%20-%20October%20-%20lightblue)
 Shorten Your Urls.
-![carbon](https://github.com/coltspy/shortURL/assets/93845598/79d94ff9-52fa-4b33-849f-f1641936ac87)
+![carbon (2)](https://github.com/coltspy/shortURL/assets/93845598/7e97356c-39f6-47a1-be20-cd82d7ab28cd)
+
 
 ### Prerequisites
 
