@@ -38,4 +38,4 @@ Open a web browser and navigate to `http://localhost:8080`. Enter a URL you want
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
