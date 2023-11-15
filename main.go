@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// Map to store shortened URLs to the original ones
+// map to store shortened URLs to the original ones
 var urlMap = make(map[string]string)
 
 // Function to generate a shortened URL token
@@ -22,15 +22,14 @@ func generateShortToken() string {
 	return string(b)
 }
 
-// Handler to create a short URL
+// handler to create a short URL
 func shortenURL(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		r.ParseForm()
-		originalURL := r.PostFormValue("url") // Retrieve URL from form
+		originalURL := r.PostFormValue("url") // retrieve URL from form
 
-		// Check if the URL starts with http:// or https://
+		// check if the URL starts with http:// or https://
 		if !strings.HasPrefix(originalURL, "http://") && !strings.HasPrefix(originalURL, "https://") {
-			// If not, prepend "http://"
 			originalURL = "http://" + originalURL
 		}
 
@@ -43,9 +42,8 @@ func shortenURL(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano()) // initialize global pseudo random generator
+	rand.Seed(time.Now().UnixNano()) // initialize random generator
 
-	// Serve static files from the 'static' directory
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
 
@@ -55,7 +53,7 @@ func main() {
 	// Handle redirection
 	http.HandleFunc("/r/", redirectFromShort)
 
-	log.Println("Server is running on http://localhost:8080")
+	log.Println("The server is now running on http://localhost:8080")
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
@@ -65,10 +63,9 @@ func main() {
 func redirectFromShort(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 
-	// The root path should be handled by the static file handler, so we don't need special handling for it here.
-	// Instead, we focus on the "/r/" prefixed paths here.
+	
 	if strings.HasPrefix(path, "/r/") {
-		shortToken := path[len("/r/"):] // extract the shortToken from the URL
+		shortToken := path[len("/r/"):] 
 		if originalURL, exists := urlMap[shortToken]; exists {
 			http.Redirect(w, r, originalURL, http.StatusSeeOther)
 			return
@@ -78,5 +75,4 @@ func redirectFromShort(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// If the path doesn't start with "/r/", let the static file handler deal with it.
 }
