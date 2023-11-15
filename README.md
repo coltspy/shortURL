@@ -14,9 +14,9 @@ Shorten Your Urls.
 
 1. Clone the repository to your local machine:
     ```
-    git clone [URL of your GitHub repository]
+    git clone https://github.com/coltspy/shortURL.git
     ```
-    Replace `[URL of your GitHub repository]` with the actual URL of your repository.
+   
 
 2. Navigate to the project directory:
     ```
