@@ -8,7 +8,7 @@ Shorten Your Urls.
 
 - [Go](https://golang.org/) (version 1.x+)
 - A modern web browser
-- Basic knowledge of Go and JavaScript
+
 
 ### Installation
 
