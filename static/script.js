@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // When the DOM is fully loaded, the following code will execute.
+   
 
     const form = document.getElementById('urlForm'); // selecting the form
 
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.text(); // this should only receive the new shortened URL
         })
         .then((data) => {
-            // Handle the response data here. For example, display the shortened URL to the user.
+            // Handle the response data here. ex: display the shortened URL to the user.
             console.log('Shortened URL:', data);
             // Display the shortened URL in the "result" paragraph
             document.getElementById('result').textContent = `Shortened URL: ${data}`;
