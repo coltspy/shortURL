@@ -44,5 +44,5 @@ button:hover {
 
 p#result {
     margin-top: 20px;
-    word-break: break-all; /* ensure that long URLs don't overflow the container */
+    word-break: break-all;
 }
